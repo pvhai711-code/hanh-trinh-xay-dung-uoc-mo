@@ -23,6 +23,8 @@ import { PrintReport } from './components/PrintReport.tsx';
 import { SettingsModal } from './components/SettingsModal.tsx';
 import { AdminDashboard } from './components/AdminDashboard.tsx';
 import { CheckCircle2, X } from 'lucide-react';
+import defaultWelcomeBg from './assets/br.png';
+import defaultSlide2Bg from './assets/slide2.png';
 
 export default function App() {
   const [aspectMode, setAspectMode] = useState<AspectRatioMode>('16:9');
@@ -40,7 +42,7 @@ export default function App() {
 
   // Background image for survey screens from Screen 2 onwards (slide2.png)
   const [slide2BgSrc, setSlide2BgSrc] = useState<string>(() => {
-    return localStorage.getItem('custom_slide2_data') || '/slide2.png';
+    return localStorage.getItem('custom_slide2_data') || defaultSlide2Bg || '/slide2.png';
   });
   const slide2InputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -282,7 +284,7 @@ export default function App() {
       style={
         currentScreen === 'welcome'
           ? {
-              backgroundImage: "url('/br.png')",
+              backgroundImage: `url('${defaultWelcomeBg}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',

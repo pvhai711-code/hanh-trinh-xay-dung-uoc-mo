@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { SunsetCityIllustration } from './SunsetCityIllustration.tsx';
 import { Volume2, VolumeX, Settings, Image as ImageIcon } from 'lucide-react';
+import defaultWelcomeBg from '../assets/br.png';
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -16,7 +17,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onOpenSettings,
 }) => {
   const [bgSrc, setBgSrc] = useState<string>(() => {
-    return localStorage.getItem('custom_bg_data') || '/br.png';
+    return localStorage.getItem('custom_bg_data') || defaultWelcomeBg || '/br.png';
   });
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
