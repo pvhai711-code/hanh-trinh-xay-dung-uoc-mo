@@ -120,7 +120,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-[#ff7c00] text-white hover:bg-[#e67000] transition-all shadow-sm text-xs font-bold cursor-pointer disabled:opacity-60 bouncy"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>{isPdfLoading ? 'Đang tạo PDF...' : 'Lưu PDF'}</span>
+            <span>{isPdfLoading ? 'Đang tạo PDF...' : 'Xuất PDF'}</span>
           </button>
         )}
 

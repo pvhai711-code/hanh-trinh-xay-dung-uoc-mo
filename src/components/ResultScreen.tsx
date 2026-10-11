@@ -372,7 +372,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-2xl bg-[#ff7c00] hover:bg-[#e67000] text-white text-xs font-bold shadow-md shadow-orange-950/20 transition-all cursor-pointer bouncy disabled:opacity-60 border border-orange-400/40"
           >
             <Download className={`w-3.5 h-3.5 ${isPdfSaving ? 'animate-bounce' : ''}`} />
-            <span>{isPdfSaving ? 'Đang xuất PDF...' : 'Lưu kết quả PDF'}</span>
+            <span>{isPdfSaving ? 'Đang xuất PDF...' : 'Xuất PDF'}</span>
           </button>
         </div>
 
