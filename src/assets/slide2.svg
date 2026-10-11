@@ -1,0 +1,164 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' width='100%' height='100%'>
+  <!-- Crisp high school students illustration for slide2 corners -->
+  <defs>
+    <filter id='drop-shadow' x='-10%' y='-10%' width='120%' height='120%'>
+      <feDropShadow dx='0' dy='8' stdDeviation='10' flood-color='#000000' flood-opacity='0.15'/>
+    </filter>
+    <linearGradient id='sky-shirt' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#ffffff'/>
+      <stop offset='100%' stop-color='#f1f5f9'/>
+    </linearGradient>
+    <linearGradient id='navy-uniform' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#1e293b'/>
+      <stop offset='100%' stop-color='#0f172a'/>
+    </linearGradient>
+    <linearGradient id='tie-red' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#e11d48'/>
+      <stop offset='100%' stop-color='#be123c'/>
+    </linearGradient>
+    <linearGradient id='skin-tone' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#ffedd5'/>
+      <stop offset='100%' stop-color='#fed7aa'/>
+    </linearGradient>
+    <linearGradient id='hair-dark' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#334155'/>
+      <stop offset='100%' stop-color='#0f172a'/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Bottom Group: 3 Students pointing towards the top right -->
+  <g transform='translate(40, 620)' filter='url(#drop-shadow)'>
+    <!-- Boy 1 (Tall, pointing forward-up) -->
+    <g transform='translate(0, 0)'>
+      <!-- Shadow -->
+      <ellipse cx='100' cy='430' rx='80' ry='16' fill='#000000' fill-opacity='0.08' />
+      <!-- Legs & Trousers -->
+      <path d='M65 260 L65 420 L95 420 L95 260 Z' fill='url(#navy-uniform)'/>
+      <path d='M105 260 L105 420 L135 420 L135 260 Z' fill='url(#navy-uniform)'/>
+      <!-- Shoes -->
+      <rect x='60' y='415' width='40' height='20' rx='8' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <rect x='105' y='415' width='40' height='20' rx='8' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <!-- Torso / White uniform shirt -->
+      <path d='M50 130 Q100 120 150 130 L145 265 L55 265 Z' fill='url(#sky-shirt)' stroke='#cbd5e1' stroke-width='1.5'/>
+      <path d='M95 130 L105 130 L103 260 L97 260 Z' fill='#e2e8f0'/>
+      <path d='M96 130 L100 160 L104 130 Z' fill='url(#tie-red)'/>
+      <!-- Backpack strap -->
+      <path d='M65 135 L60 250' stroke='#0f172a' stroke-width='9' stroke-linecap='round'/>
+      <!-- Head & Neck -->
+      <rect x='92' y='105' width='16' height='30' fill='url(#skin-tone)' rx='5'/>
+      <ellipse cx='100' cy='75' rx='35' ry='42' fill='url(#skin-tone)'/>
+      <!-- Hair -->
+      <path d='M65 65 Q100 15 135 65 Q140 100 128 105 Q100 95 72 105 Z' fill='url(#hair-dark)'/>
+      <!-- Eyes & Smile -->
+      <circle cx='90' cy='75' r='4' fill='#0f172a'/>
+      <circle cx='115' cy='73' r='4' fill='#0f172a'/>
+      <path d='M96 90 Q103 100 110 90' stroke='#e11d48' stroke-width='3' fill='none' stroke-linecap='round'/>
+      <!-- Cheerful blush -->
+      <ellipse cx='83' cy='83' rx='7' ry='4' fill='#f43f5e' fill-opacity='0.4'/>
+      <ellipse cx='122' cy='81' rx='7' ry='4' fill='#f43f5e' fill-opacity='0.4'/>
+      <!-- Pointing Arm (Right arm extended pointing top-right) -->
+      <path d='M140 145 Q190 100 240 60' stroke='url(#sky-shirt)' stroke-width='26' stroke-linecap='round'/>
+      <circle cx='243' cy='58' r='12' fill='url(#skin-tone)'/>
+      <path d='M243 58 L265 40' stroke='url(#skin-tone)' stroke-width='10' stroke-linecap='round'/>
+    </g>
+
+    <!-- Girl 1 (Middle-front, smiling, cheerful) -->
+    <g transform='translate(60, 80)'>
+      <!-- Shadow -->
+      <ellipse cx='70' cy='350' rx='65' ry='14' fill='#000000' fill-opacity='0.08' />
+      <!-- Pleated Skirt -->
+      <path d='M40 180 L20 280 L120 280 L100 180 Z' fill='url(#navy-uniform)'/>
+      <!-- Legs -->
+      <rect x='45' y='275' width='16' height='65' fill='url(#skin-tone)' rx='6'/>
+      <rect x='78' y='275' width='16' height='65' fill='url(#skin-tone)' rx='6'/>
+      <!-- Shoes -->
+      <rect x='42' y='335' width='24' height='16' rx='6' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <rect x='76' y='335' width='24' height='16' rx='6' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <!-- White shirt -->
+      <path d='M42 95 Q70 85 98 95 L102 185 L38 185 Z' fill='url(#sky-shirt)' stroke='#cbd5e1' stroke-width='1.5'/>
+      <path d='M65 95 L75 95 L73 130 L67 130 Z' fill='url(#tie-red)'/>
+      <!-- Head & Long Hair -->
+      <ellipse cx='70' cy='50' rx='30' ry='36' fill='url(#skin-tone)'/>
+      <!-- Twintails / Long hair -->
+      <path d='M38 45 Q70 0 102 45 Q115 130 95 160 Q70 120 45 160 Q25 130 38 45 Z' fill='url(#hair-dark)'/>
+      <circle cx='60' cy='52' r='3.5' fill='#0f172a'/>
+      <circle cx='80' cy='52' r='3.5' fill='#0f172a'/>
+      <path d='M64 66 Q70 74 76 66' stroke='#e11d48' stroke-width='2.5' fill='none' stroke-linecap='round'/>
+      <ellipse cx='55' cy='60' rx='6' ry='3.5' fill='#f43f5e' fill-opacity='0.4'/>
+      <ellipse cx='85' cy='60' rx='6' ry='3.5' fill='#f43f5e' fill-opacity='0.4'/>
+    </g>
+
+    <!-- Boy 2 (With glasses, pumping fist) -->
+    <g transform='translate(130, 95)'>
+      <ellipse cx='60' cy='335' rx='55' ry='12' fill='#000000' fill-opacity='0.08' />
+      <path d='M42 180 L42 325 L64 325 L64 180 Z' fill='url(#navy-uniform)'/>
+      <path d='M70 180 L70 325 L92 325 L92 180 Z' fill='url(#navy-uniform)'/>
+      <rect x='39' y='320' width='28' height='15' rx='6' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <rect x='68' y='320' width='28' height='15' rx='6' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <path d='M35 100 Q65 90 95 100 L95 185 L35 185 Z' fill='url(#sky-shirt)' stroke='#cbd5e1' stroke-width='1.5'/>
+      <ellipse cx='65' cy='55' rx='28' ry='34' fill='url(#skin-tone)'/>
+      <path d='M37 50 Q65 15 93 50 Q98 80 88 85 Q65 75 42 85 Z' fill='url(#hair-dark)'/>
+      <!-- Glasses -->
+      <circle cx='56' cy='55' r='9' fill='none' stroke='#0f172a' stroke-width='2.5'/>
+      <circle cx='76' cy='55' r='9' fill='none' stroke='#0f172a' stroke-width='2.5'/>
+      <line x1='65' y1='55' x2='67' y2='55' stroke='#0f172a' stroke-width='2.5'/>
+      <path d='M60 70 Q66 77 72 70' stroke='#e11d48' stroke-width='2.5' fill='none'/>
+      <!-- Fist up -->
+      <path d='M95 120 Q120 100 115 70' stroke='url(#sky-shirt)' stroke-width='20' stroke-linecap='round'/>
+      <circle cx='115' cy='65' r='10' fill='url(#skin-tone)'/>
+    </g>
+  </g>
+
+  <!-- Right Bottom Group: Students pointing towards the top left -->
+  <g transform='translate(1560, 620)' filter='url(#drop-shadow)'>
+    <!-- Boy 3 (Saluting / Looking forward) -->
+    <g transform='translate(20, 40)'>
+      <ellipse cx='70' cy='390' rx='65' ry='14' fill='#000000' fill-opacity='0.08' />
+      <path d='M45 220 L45 385 L70 385 L70 220 Z' fill='url(#navy-uniform)'/>
+      <path d='M80 220 L80 385 L105 385 L105 220 Z' fill='url(#navy-uniform)'/>
+      <rect x='40' y='380' width='33' height='16' rx='6' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <rect x='78' y='380' width='33' height='16' rx='6' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <path d='M35 110 Q75 100 115 110 L115 225 L35 225 Z' fill='url(#sky-shirt)' stroke='#cbd5e1' stroke-width='1.5'/>
+      <ellipse cx='75' cy='60' rx='30' ry='36' fill='url(#skin-tone)'/>
+      <path d='M45 55 Q75 18 105 55 Q110 85 98 90 Q75 80 52 90 Z' fill='url(#hair-dark)'/>
+      <circle cx='66' cy='62' r='3.5' fill='#0f172a'/>
+      <circle cx='86' cy='62' r='3.5' fill='#0f172a'/>
+      <path d='M70 75 Q76 83 82 75' stroke='#e11d48' stroke-width='2.5' fill='none'/>
+      <!-- Hand saluting forehead -->
+      <path d='M35 130 Q15 90 60 48' stroke='url(#sky-shirt)' stroke-width='20' stroke-linecap='round'/>
+      <circle cx='65' cy='46' r='9' fill='url(#skin-tone)'/>
+    </g>
+
+    <!-- Girl 2 (Holding folder/book, smiling) -->
+    <g transform='translate(80, 80)'>
+      <ellipse cx='65' cy='350' rx='60' ry='12' fill='#000000' fill-opacity='0.08' />
+      <path d='M40 185 L20 280 L110 280 L90 185 Z' fill='url(#navy-uniform)'/>
+      <rect x='45' y='275' width='15' height='65' fill='url(#skin-tone)' rx='5'/>
+      <rect x='75' y='275' width='15' height='65' fill='url(#skin-tone)' rx='5'/>
+      <rect x='42' y='335' width='22' height='15' rx='5' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <rect x='73' y='335' width='22' height='15' rx='5' fill='#ffffff' stroke='#cbd5e1' stroke-width='2'/>
+      <path d='M40 95 Q65 85 90 95 L95 190 L35 190 Z' fill='url(#sky-shirt)' stroke='#cbd5e1' stroke-width='1.5'/>
+      <!-- Holding green book -->
+      <rect x='60' y='140' width='35' height='45' rx='4' fill='#059669' stroke='#047857' stroke-width='2' transform='rotate(10, 60, 140)'/>
+      <ellipse cx='65' cy='52' rx='28' ry='34' fill='url(#skin-tone)'/>
+      <path d='M37 45 Q65 10 93 45 Q105 110 88 135 Q65 110 42 135 Q27 110 37 45 Z' fill='url(#hair-dark)'/>
+      <circle cx='56' cy='54' r='3.5' fill='#0f172a'/>
+      <circle cx='76' cy='54' r='3.5' fill='#0f172a'/>
+      <path d='M60 67 Q66 75 72 67' stroke='#e11d48' stroke-width='2.5' fill='none'/>
+      <ellipse cx='50' cy='62' rx='6' ry='3.5' fill='#f43f5e' fill-opacity='0.4'/>
+      <ellipse cx='80' cy='62' rx='6' ry='3.5' fill='#f43f5e' fill-opacity='0.4'/>
+    </g>
+
+    <!-- Girl 3 (Pointing towards the top-left) -->
+    <g transform='translate(50, -30)'>
+      <path d='M60 170 Q30 140 -20 110' stroke='url(#sky-shirt)' stroke-width='24' stroke-linecap='round'/>
+      <circle cx='-22' cy='108' r='11' fill='url(#skin-tone)'/>
+      <path d='M-22 108 L-45 92' stroke='url(#skin-tone)' stroke-width='9' stroke-linecap='round'/>
+      <ellipse cx='80' cy='85' rx='28' ry='34' fill='url(#skin-tone)'/>
+      <path d='M52 80 Q80 40 108 80 Q120 150 100 170 Q80 145 60 170 Q45 150 52 80 Z' fill='url(#hair-dark)'/>
+      <circle cx='70' cy='86' r='3.5' fill='#0f172a'/>
+      <circle cx='90' cy='86' r='3.5' fill='#0f172a'/>
+      <path d='M75 99 Q81 107 87 99' stroke='#e11d48' stroke-width='2.5' fill='none'/>
+    </g>
+  </g>
+</svg>

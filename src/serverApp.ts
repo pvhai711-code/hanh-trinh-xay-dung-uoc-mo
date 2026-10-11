@@ -205,6 +205,34 @@ app.post('/api/upload-background', (req: Request, res: Response) => {
   }
 });
 
+// 7. Upload Custom Slide2 Image (Writes to public/slide2.png and src/assets/slide2.png)
+app.post('/api/upload-slide2', (req: Request, res: Response) => {
+  try {
+    const { imageBase64 } = req.body || {};
+    if (!imageBase64) {
+      return res.status(400).json({ success: false, message: 'Chưa có dữ liệu hình ảnh' });
+    }
+    const cleanBase64 = String(imageBase64).replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(cleanBase64, 'base64');
+
+    const publicDir = path.resolve(process.cwd(), 'public');
+    if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
+    fs.writeFileSync(path.join(publicDir, 'slide2.png'), buffer);
+
+    const assetsDir = path.resolve(process.cwd(), 'src/assets');
+    if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
+    fs.writeFileSync(path.join(assetsDir, 'slide2.png'), buffer);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Đã lưu ảnh slide2.png vào hệ thống thành công',
+    });
+  } catch (err: any) {
+    console.error('Error saving slide2 image:', err);
+    return res.status(500).json({ success: false, message: err?.message || 'Lỗi khi lưu ảnh slide2' });
+  }
+});
+
 // Catch-all for undefined /api/* routes to ALWAYS return JSON with proper 404 status (Never return HTML!)
 app.all('/api/*', (req: Request, res: Response) => {
   return res.status(404).json({

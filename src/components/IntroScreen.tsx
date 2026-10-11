@@ -9,7 +9,7 @@ interface IntroScreenProps {
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({ onBack, onNext, onOpenSettings }) => {
   return (
-    <div className="w-full h-full flex flex-col justify-between p-4 sm:p-8 bg-[#fdfdfd] overflow-hidden select-none font-serif">
+    <div className="w-full h-full flex flex-col justify-between p-4 sm:p-8 bg-transparent overflow-hidden select-none font-serif relative z-10">
       {/* Stepper Progress */}
       <div className="max-w-md mx-auto w-full pt-1 sm:pt-2">
         <div className="flex items-center justify-between relative">
@@ -143,11 +143,6 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onBack, onNext, onOpen
             Tiếp tục →
           </button>
         </div>
-      </div>
-
-      {/* Subtle Imprint */}
-      <div className="text-center pt-2 text-[10px] text-slate-400">
-        HÀNH TRÌNH XÂY DỰNG ƯỚC MƠ · Sketchnote Design · Grit · Purpose · Self-Control
       </div>
     </div>
   );

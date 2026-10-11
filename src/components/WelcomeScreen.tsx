@@ -109,12 +109,12 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         </div>
       )}
 
-      {/* 1. Lớp hình nền: Chuẩn 16:9, bao phủ toàn màn hình, căn giữa, không lặp lại */}
+      {/* 1. Lớp hình nền: Chuẩn 16:9, bao phủ toàn màn hình, căn giữa, không lặp lại - Tăng 10% độ sáng */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
           src={bgSrc}
           alt="Hình nền Hành trình xây dựng ước mơ"
-          className="w-full h-full object-cover object-center select-none"
+          className="w-full h-full object-cover object-center select-none brightness-100 contrast-[1.02]"
           onError={(e) => {
             // Tự động ẩn thẻ img nếu ảnh lỗi để hiển thị hình nền đồ họa dự phòng
             e.currentTarget.style.display = 'none';
@@ -124,8 +124,9 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <SunsetCityIllustration className="absolute inset-0 -z-10 w-full h-full" />
       </div>
 
-      {/* 2. Measured contrast scrim to balance illumination and ensure text is high-contrast and readable */}
-      <div className="absolute inset-0 z-1 pointer-events-none bg-gradient-to-b from-slate-950/50 via-slate-950/20 to-slate-950/75" />
+      {/* 2. Lớp phủ tương phản cân bằng giúp nền sáng hơn 10% trong khi chữ vẫn nổi bật sắc nét */}
+      <div className="absolute inset-0 z-1 pointer-events-none bg-slate-950/20 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 z-1 pointer-events-none bg-gradient-to-b from-slate-950/35 via-slate-950/15 to-slate-950/50" />
 
       {/* 3. Top Header Bar (Điểm trên cùng) */}
       <header className="relative z-10 w-full flex items-center justify-between px-4 sm:px-8 py-3.5 shrink-0">
@@ -190,57 +191,102 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         </div>
       </header>
 
-      {/* 4. Central Content Card: Đặt trong khung thủy tinh mờ giúp làm nổi bật chữ tối đa, cân đối trên/dưới */}
+      {/* 4. Central Content: Hoàn toàn trong suốt (background: transparent), không có backdrop-blur hay màu nền tối */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 my-auto py-2">
-        <div className="w-full max-w-xl mx-auto p-5 sm:p-7 rounded-3xl bg-slate-950/45 backdrop-blur-md border border-white/20 shadow-2xl text-center flex flex-col items-center">
-          {/* Tiêu đề chính lớn, nổi bật với sắc vàng hoàng hôn */}
-          <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black uppercase tracking-wider text-white drop-shadow-lg leading-[1.18]">
+        <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 bg-transparent text-center flex flex-col items-center">
+          {/* Hàng chữ mới viết hoa hoàn toàn ở phía trên 'HÀNH TRÌNH': Tăng kích cỡ chữ, màu vàng tươi rực rỡ, in đậm, đổ bóng nét */}
+          <div
+            className="text-sm sm:text-base md:text-lg font-black tracking-[0.2em] sm:tracking-[0.25em] text-[#fde047] uppercase mb-2 sm:mb-3"
+            style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.85)' }}
+          >
+            HỌC SINH TRƯỜNG THPT VÕ TRƯỜNG TOẢN
+          </div>
+
+          {/* Tiêu đề chính lớn: Màu trắng sáng tinh khôi và vàng hoàng kim, in đậm font-black, bóng đổ kép cực rõ */}
+          <h1
+            className="text-3xl sm:text-5xl lg:text-[56px] font-black uppercase tracking-wider text-white leading-tight"
+            style={{ textShadow: '2px 2px 6px rgba(0, 0, 0, 0.95), 0 4px 14px rgba(0, 0, 0, 0.9)' }}
+          >
             HÀNH TRÌNH
             <br />
-            XÂY DỰNG
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-[#fed7aa] to-orange-300 drop-shadow-md">
-              ƯỚC MƠ
+            <span
+              className="text-[#fef08a] text-3xl sm:text-6xl lg:text-[68px] inline-block mt-1 sm:mt-2 tracking-wide font-black"
+              style={{ textShadow: '2px 2px 6px rgba(0, 0, 0, 0.95), 0 4px 16px rgba(0, 0, 0, 0.95)' }}
+            >
+              XÂY DỰNG ƯỚC MƠ
             </span>
           </h1>
 
-          {/* Tagline thông điệp */}
-          <div className="mt-2 sm:mt-3 text-sm sm:text-lg text-amber-200 font-semibold italic drop-shadow-sm">
+          {/* Tagline thông điệp: Màu vàng sáng hổ phách, in đậm nổi bật */}
+          <div
+            className="mt-3.5 sm:mt-4 text-base sm:text-xl md:text-2xl text-[#fef08a] font-extrabold italic"
+            style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.8)' }}
+          >
             Hiểu mình hôm nay — Kiến tạo ngày mai
           </div>
 
-          {/* Mô tả dễ đọc trên nền tối mờ */}
-          <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-slate-100 max-w-md mx-auto font-normal leading-relaxed drop-shadow-xs">
-            Khám phá sự bền bỉ, mục đích sống và khả năng tự kiểm soát để hiểu hơn về hành trình ước mơ của chính em.
-          </p>
+          {/* 2 dòng nội dung cốt lõi: Chữ trắng không in đậm (font-normal), giữ cỡ chữ to và đổ bóng nét */}
+          <div
+            className="mt-3 sm:mt-3.5 text-base sm:text-lg md:text-xl text-white font-normal leading-snug max-w-2xl mx-auto flex flex-col gap-1 sm:gap-1.5"
+            style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.85)' }}
+          >
+            <div>Khám phá sự bền bỉ, mục đích sống và khả năng tự kiểm soát</div>
+            <div>để hiểu hơn về hành trình ước mơ của chính em</div>
+          </div>
 
-          {/* Nút Bắt đầu hành trình: Cam Pastel #ff7c00 bo góc rounded-2xl nảy nhẹ */}
-          <div className="mt-4 sm:mt-5">
+          {/* Nút Bắt đầu hành trình: Tăng kích cỡ nút và chữ to hơn */}
+          <div className="mt-5 sm:mt-6">
             <button
               type="button"
               onClick={onStart}
-              className="group inline-flex items-center gap-2 px-8 py-3 rounded-2xl bg-[#ff7c00] hover:bg-[#e67000] text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-orange-950/60 transition-all cursor-pointer bouncy border border-orange-400/50"
+              className="group inline-flex items-center gap-3 px-10 py-4.5 rounded-2xl bg-[#ff7c00] hover:bg-[#ff881a] text-white font-extrabold text-base sm:text-lg tracking-wide shadow-2xl shadow-black/95 transition-all cursor-pointer bouncy border-2 border-amber-300"
+              style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.9)' }}
             >
-              <span className="text-amber-200">✦</span>
+              <span className="text-[#fef08a] text-xl">✦</span>
               <span>Bắt đầu hành trình →</span>
             </button>
           </div>
 
-          {/* Dòng thông tin phụ */}
-          <div className="mt-3 text-[11px] sm:text-xs text-slate-200/90 font-medium tracking-wide">
+          {/* Dòng thông tin phụ: Chữ trắng không in đậm (font-normal) */}
+          <div
+            className="mt-4 text-sm sm:text-base md:text-lg text-white font-normal tracking-wide"
+            style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95)' }}
+          >
             24 câu hỏi · 7–10 phút · Kết quả ngay · Không cần đăng nhập
           </div>
 
-          {/* Câu trích dẫn khích lệ */}
-          <div className="mt-1.5 text-xs sm:text-sm text-amber-200/95 italic font-serif">
+          {/* Câu trích dẫn khích lệ: Giữ màu vàng hổ phách nổi bật */}
+          <div
+            className="mt-2.5 text-base sm:text-lg md:text-xl text-[#fef08a] font-bold italic font-serif"
+            style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95)' }}
+          >
             “Ước mơ không xa vời khi bạn hiểu rõ chính mình.”
+          </div>
+
+          {/* Ngay phía dưới dòng trích dẫn: Copyright by Seroto. (Chữ trắng sáng không in đậm - font-normal) */}
+          <div
+            className="mt-1.5 text-sm sm:text-base md:text-lg text-slate-100 font-normal tracking-wider"
+            style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95)' }}
+          >
+            Copyright by Seroto.
           </div>
         </div>
       </main>
 
-      {/* 5. Bottom Imprint Bar (Điểm dưới cùng - Cân đối tuyệt đối với điểm trên cùng) */}
-      <footer className="relative z-10 w-full text-center pb-3.5 text-[10px] sm:text-xs text-white/60 tracking-wider shrink-0 drop-shadow-sm">
-        HÀNH TRÌNH XÂY DỰNG ƯỚC MƠ · Grit · Purpose · Self-Control · Phiên bản thử nghiệm
+      {/* 5. Bottom Imprint Bar (Hàng chân trang chữ trắng không in đậm - font-normal) */}
+      <footer className="relative z-10 w-full text-center pb-3 px-4 flex flex-col items-center gap-1.5 shrink-0">
+        <div
+          className="text-sm sm:text-base text-white font-normal tracking-wider font-sans"
+          style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95)' }}
+        >
+          HÀNH TRÌNH XÂY DỰNG ƯỚC MƠ · Grit · Purpose · Self-Control · Phiên bản thử nghiệm
+        </div>
+        <div
+          className="text-xs sm:text-sm md:text-base text-slate-100 font-normal tracking-normal font-sans italic"
+          style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.95)' }}
+        >
+          This version has been copied and edited, but the original core content remains unaffected.
+        </div>
       </footer>
     </div>
   );

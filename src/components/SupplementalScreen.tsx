@@ -44,7 +44,7 @@ export const SupplementalScreen: React.FC<SupplementalScreenProps> = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-between p-4 sm:p-8 bg-[#fdfdfd] overflow-hidden select-none font-serif">
+    <div className="w-full h-full flex flex-col justify-between p-4 sm:p-8 bg-transparent overflow-hidden select-none font-serif relative z-10">
       {/* Top Progress Track */}
       <div className="w-full max-w-2xl mx-auto pt-1">
         <div className="h-2 w-full bg-[#0a6962] rounded-2xl shadow-xs" />
@@ -134,11 +134,6 @@ export const SupplementalScreen: React.FC<SupplementalScreenProps> = ({
         >
           Xem kết quả →
         </button>
-      </div>
-
-      {/* Imprint */}
-      <div className="text-center pt-2 text-[10px] text-slate-400">
-        HÀNH TRÌNH XÂY DỰNG ƯỚC MƠ · Sketchnote Edition · Grit · Purpose · Self-Control
       </div>
     </div>
   );

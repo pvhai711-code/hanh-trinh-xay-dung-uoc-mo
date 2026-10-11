@@ -67,7 +67,7 @@ export const SurveyScreen: React.FC<SurveyScreenProps> = ({
   const meta = getDimensionMeta();
 
   return (
-    <div className="w-full h-full flex flex-col justify-between p-4 sm:p-8 bg-[#fdfdfd] overflow-hidden select-none font-serif">
+    <div className="w-full h-full flex flex-col justify-between p-4 sm:p-8 bg-transparent overflow-hidden select-none font-serif relative z-10">
       {/* Top Progress Track with #0a6962 */}
       <div className="w-full max-w-2xl mx-auto pt-1">
         <div className="flex items-center justify-between mb-1.5">
@@ -181,11 +181,6 @@ export const SurveyScreen: React.FC<SurveyScreenProps> = ({
         >
           {currentIndex === totalQuestions ? 'Tiếp tục →' : 'Câu tiếp theo →'}
         </button>
-      </div>
-
-      {/* Imprint */}
-      <div className="text-center pt-2 text-[10px] text-slate-400">
-        HÀNH TRÌNH XÂY DỰNG ƯỚC MƠ · Sketchnote Edition · Grit · Purpose · Self-Control
       </div>
     </div>
   );

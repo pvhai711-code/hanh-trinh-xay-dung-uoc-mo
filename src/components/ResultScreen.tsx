@@ -31,8 +31,22 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   const percent = Math.min(100, Math.max(0, report.compositeScore));
   const strokeDashoffset = circumference * (1 - percent / 100);
 
+  const handleRetakeClick = () => {
+    try {
+      const savedBg = localStorage.getItem('custom_bg_data');
+      localStorage.clear();
+      sessionStorage.clear();
+      if (savedBg) {
+        localStorage.setItem('custom_bg_data', savedBg);
+      }
+    } catch (e) {
+      console.warn('Lỗi khi xóa client storage:', e);
+    }
+    onRetake();
+  };
+
   return (
-    <div className="w-full h-full flex flex-col justify-between p-3 sm:p-6 bg-[#fdfdfd] overflow-hidden select-none font-serif">
+    <div className="w-full h-full flex flex-col justify-between p-3 sm:p-6 bg-transparent overflow-hidden select-none font-serif relative z-10">
       {/* Top Report Header */}
       <div className="text-center pt-1 shrink-0">
         <div className="text-[10px] sm:text-xs tracking-wider uppercase text-[#0a6962] font-bold">
@@ -348,17 +362,19 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       </div>
 
       {/* Bottom Disclaimer & Action Buttons */}
-      <div className="shrink-0 pt-2 border-t border-slate-100 max-w-2xl mx-auto w-full">
-        {/* Disclaimer Note */}
-        <p className="text-[10px] text-slate-400 text-center leading-snug px-2 mb-2.5">
-          Đây là chỉ số tự đánh giá thử nghiệm, chưa được chuẩn hóa tâm trắc. Điểm số không phải tỷ lệ thành công hay kết luận về phẩm chất, năng lực. Không có dữ liệu trả lời nào được gửi lên máy chủ bởi website này.
-        </p>
+      <div className="shrink-0 pt-1 max-w-2xl mx-auto w-full flex flex-col justify-end">
+        {/* Disclaimer Note: Được nâng cao lên trên (mb-12 sm:mb-16) với nền bảo vệ nhẹ để tuyệt đối không chạm hay đè lên đầu nhóm học sinh phía dưới */}
+        <div className="w-full text-center px-3 mb-12 sm:mb-16">
+          <p className="text-[10px] sm:text-[10.5px] text-slate-500 font-medium leading-relaxed max-w-xl mx-auto inline-block px-3.5 py-1.5 rounded-xl bg-white/85 backdrop-blur-xs border border-slate-200/60 shadow-xs">
+            Đây là chỉ số tự đánh giá thử nghiệm, chưa được chuẩn hóa tâm trắc. Điểm số không phải tỷ lệ thành công hay kết luận về phẩm chất, năng lực. Không có dữ liệu trả lời nào được gửi lên máy chủ bởi website này.
+          </p>
+        </div>
 
-        {/* Action Buttons: rounded-2xl and bouncy */}
-        <div className="flex items-center justify-between">
+        {/* Action Buttons: Giữ nguyên vị trí ở dưới cùng, hai bên cân đối */}
+        <div className="flex items-center justify-between border-t border-slate-100/80 pt-2 pb-0.5">
           <button
             type="button"
-            onClick={onRetake}
+            onClick={handleRetakeClick}
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl border border-slate-300 text-slate-700 hover:bg-slate-50 transition-all text-xs font-semibold cursor-pointer bouncy shadow-xs"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -374,11 +390,6 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             <Download className={`w-3.5 h-3.5 ${isPdfSaving ? 'animate-bounce' : ''}`} />
             <span>{isPdfSaving ? 'Đang xuất PDF...' : 'Xuất PDF'}</span>
           </button>
-        </div>
-
-        {/* Imprint */}
-        <div className="text-center pt-2 text-[10px] text-slate-400">
-          HÀNH TRÌNH XÂY DỰNG ƯỚC MƠ · Sketchnote Edition · Grit · Purpose · Self-Control
         </div>
       </div>
     </div>

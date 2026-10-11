@@ -14,6 +14,7 @@ interface HeaderBarProps {
   onSavePdf?: () => void;
   isPdfLoading?: boolean;
   onGoHome?: () => void;
+  onUploadSlide2?: () => void;
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
@@ -28,6 +29,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   onSavePdf,
   isPdfLoading = false,
   onGoHome,
+  onUploadSlide2,
 }) => {
   return (
     <header className="w-full flex items-center justify-between px-3 sm:px-8 py-3 select-none shrink-0 border-b border-[#0a6962]/10 bg-[#fdfdfd]/90 backdrop-blur-sm shadow-xs font-serif">
@@ -121,6 +123,19 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           >
             <Download className="w-3.5 h-3.5" />
             <span>{isPdfLoading ? 'Đang tạo PDF...' : 'Xuất PDF'}</span>
+          </button>
+        )}
+
+        {/* Nút Thay Đổi Ảnh Nền Khảo Sát (slide2.png) */}
+        {onUploadSlide2 && (
+          <button
+            type="button"
+            onClick={onUploadSlide2}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-2xl bg-white hover:bg-[#edf6f5] text-[#0a6962] border border-[#0a6962]/30 transition-all text-xs font-bold cursor-pointer bouncy shadow-xs"
+            title="Tải lên hoặc thay đổi ảnh nền khảo sát (slide2.png)"
+          >
+            <span className="text-amber-500">🖼️</span>
+            <span className="hidden sm:inline">Đổi ảnh nền câu hỏi</span>
           </button>
         )}
 
