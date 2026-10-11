@@ -17,7 +17,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onOpenSettings,
 }) => {
   const [bgSrc, setBgSrc] = useState<string>(() => {
-    return localStorage.getItem('custom_bg_data') || defaultWelcomeBg || '/br.png';
+    try {
+      const saved = localStorage.getItem('custom_bg_data');
+      if (saved && (saved.startsWith('data:image/') || saved.startsWith('blob:'))) {
+        return saved;
+      }
+    } catch (_) {}
+    return defaultWelcomeBg;
   });
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
