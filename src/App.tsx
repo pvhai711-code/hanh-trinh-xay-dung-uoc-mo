@@ -192,25 +192,35 @@ export default function App() {
     }
   };
 
-  // PDF Export with client-side jsPDF download & fallback
+  // PDF Export with client-side jsPDF download & safe fallback
   const handleSavePdf = async () => {
+    // 1. Khóa nút bấm để tránh người dùng nhấn liên tục
     setIsPdfLoading(true);
+
     try {
       const success = await exportReportToPdf(
         'print-report-container',
         'Bao_Cao_Hanh_Trinh_Uoc_Mo.pdf'
       );
+
       if (success) {
         setToastMsg('Đã tạo và tải tệp PDF về máy thành công!');
-        setTimeout(() => setToastMsg(null), 4000);
-      } else {
-        window.print();
+        setTimeout(() => setToastMsg(null), 3000);
       }
     } catch (err) {
-      console.error(err);
-      window.print();
+      console.error('[handleSavePdf Lỗi xuất PDF]:', err);
+      // Fallback nếu có lỗi
+      try {
+        window.print();
+      } catch (_) {}
     } finally {
+      // ⚠️ ĐOẠN QUAN TRỌNG NHẤT: Bắt buộc mở khóa web trong khối finally sau khi chạy xong hoặc gặp lỗi/bị hủy
       setIsPdfLoading(false);
+
+      // Đảm bảo tiêu điểm màn hình và các sự kiện chuột/chạm luôn hoạt động lại bình thường
+      if (typeof window !== 'undefined') {
+        window.focus();
+      }
     }
   };
 
