@@ -10,11 +10,17 @@ export const app = express();
 
 app.use(express.json({ limit: '10mb' }));
 
-// Ensure CORS and JSON headers are always present
-app.use((req: Request, res: Response, next: NextFunction) => {
+// Ensure CORS and JSON headers are applied to /api endpoints
+app.use('/api', (req: Request, res: Response, next: NextFunction) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   next();
 });
+
+// Serve static files from public directory
+const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
+if (fs.existsSync(PUBLIC_DIR)) {
+  app.use(express.static(PUBLIC_DIR));
+}
 
 // Directory for persistent server storage
 const DATA_DIR = path.resolve(process.cwd(), 'data');
@@ -168,6 +174,34 @@ app.post('/api/admin/reset', requireAdmin, (req: Request, res: Response) => {
   } catch (err) {
     console.error('Error removing config file:', err);
     return res.status(500).json({ success: false, message: 'Lỗi khi khôi phục cấu hình' });
+  }
+});
+
+// 6. Upload Custom Background Image (Writes to public/br.png and src/assets/br.png)
+app.post('/api/upload-background', (req: Request, res: Response) => {
+  try {
+    const { imageBase64 } = req.body || {};
+    if (!imageBase64) {
+      return res.status(400).json({ success: false, message: 'Chưa có dữ liệu hình ảnh' });
+    }
+    const cleanBase64 = String(imageBase64).replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(cleanBase64, 'base64');
+
+    const publicDir = path.resolve(process.cwd(), 'public');
+    if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
+    fs.writeFileSync(path.join(publicDir, 'br.png'), buffer);
+
+    const assetsDir = path.resolve(process.cwd(), 'src/assets');
+    if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
+    fs.writeFileSync(path.join(assetsDir, 'br.png'), buffer);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Đã lưu ảnh nền br.png vào hệ thống thành công',
+    });
+  } catch (err: any) {
+    console.error('Error saving background image:', err);
+    return res.status(500).json({ success: false, message: err?.message || 'Lỗi khi lưu ảnh nền' });
   }
 });
 

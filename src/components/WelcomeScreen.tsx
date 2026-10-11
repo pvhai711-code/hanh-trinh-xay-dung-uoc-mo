@@ -1,28 +1,134 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { SunsetCityIllustration } from './SunsetCityIllustration.tsx';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Settings, Image as ImageIcon } from 'lucide-react';
 
 interface WelcomeScreenProps {
   onStart: () => void;
   isAudioPlaying: boolean;
   onToggleAudio: () => void;
+  onOpenSettings?: () => void;
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onStart,
   isAudioPlaying,
   onToggleAudio,
+  onOpenSettings,
 }) => {
+  const [bgSrc, setBgSrc] = useState<string>(() => {
+    return localStorage.getItem('custom_bg_data') || '/br.png';
+  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const processFile = (file: File) => {
+    if (!file || !file.type.startsWith('image/')) {
+      setUploadStatus('Vui lòng chọn tập tin hình ảnh (PNG, JPG, WEBP)');
+      setTimeout(() => setUploadStatus(null), 3000);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const dataUrl = reader.result as string;
+      setBgSrc(dataUrl);
+      try {
+        localStorage.setItem('custom_bg_data', dataUrl);
+      } catch (err) {
+        console.warn('LocalStorage limit for background image', err);
+      }
+      setUploadStatus('Đã áp dụng hình nền thành công!');
+      setTimeout(() => setUploadStatus(null), 3000);
+
+      try {
+        await fetch('/api/upload-background', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: dataUrl }),
+        });
+      } catch (err) {
+        console.warn('Server upload background warning', err);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) processFile(file);
+  };
+
   return (
-    <div className="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl border border-white/20 select-none text-white font-serif">
-      {/* 1. Background illustration: Hoàng hôn thành phố dưới cánh hoa đào */}
-      <SunsetCityIllustration className="absolute inset-0 z-0" />
+    <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className={`relative w-full h-full flex flex-col justify-between overflow-hidden select-none text-white font-serif bg-cover bg-center bg-no-repeat transition-all ${
+        isDragging ? 'ring-4 ring-amber-400 ring-inset' : ''
+      }`}
+      style={{
+        backgroundImage: `url('${bgSrc}')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Kéo thả ảnh phản hồi trực quan */}
+      {isDragging && (
+        <div className="absolute inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center border-4 border-dashed border-amber-400 m-4 rounded-3xl animate-in fade-in">
+          <ImageIcon className="w-16 h-16 text-amber-400 mb-3 animate-bounce" />
+          <h3 className="text-xl font-bold text-white tracking-wide">Thả file ảnh vào đây</h3>
+          <p className="text-sm text-amber-200 mt-1">Ảnh sẽ tự động đặt làm hình nền 16:9 của trang Welcome</p>
+        </div>
+      )}
+
+      {/* Thông báo trạng thái tải ảnh */}
+      {uploadStatus && (
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-slate-900/90 border border-amber-400/50 rounded-2xl text-amber-200 text-xs font-semibold shadow-xl backdrop-blur-md animate-in fade-in slide-in-from-top-2">
+          {uploadStatus}
+        </div>
+      )}
+
+      {/* 1. Lớp hình nền: Chuẩn 16:9, bao phủ toàn màn hình, căn giữa, không lặp lại */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img
+          src={bgSrc}
+          alt="Hình nền Hành trình xây dựng ước mơ"
+          className="w-full h-full object-cover object-center select-none"
+          onError={(e) => {
+            // Tự động ẩn thẻ img nếu ảnh lỗi để hiển thị hình nền đồ họa dự phòng
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+        {/* Lớp đồ họa dự phòng nếu ảnh bị xóa hoặc tải chậm */}
+        <SunsetCityIllustration className="absolute inset-0 -z-10 w-full h-full" />
+      </div>
 
       {/* 2. Measured contrast scrim to balance illumination and ensure text is high-contrast and readable */}
       <div className="absolute inset-0 z-1 pointer-events-none bg-gradient-to-b from-slate-950/50 via-slate-950/20 to-slate-950/75" />
 
       {/* 3. Top Header Bar (Điểm trên cùng) */}
-      <header className="relative z-10 w-full flex items-center justify-between px-6 sm:px-10 py-4 shrink-0">
+      <header className="relative z-10 w-full flex items-center justify-between px-4 sm:px-8 py-3.5 shrink-0">
         <div className="flex items-center gap-2">
           <span className="text-[#ff7c00] font-black text-sm drop-shadow-sm">➤</span>
           <span className="font-bold text-xs sm:text-sm tracking-wider uppercase text-white drop-shadow-md">
@@ -30,23 +136,58 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={onToggleAudio}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-black/30 backdrop-blur-md border border-white/30 text-white hover:bg-black/45 transition-all text-xs font-semibold shadow-xs bouncy cursor-pointer"
-        >
-          {isAudioPlaying ? (
-            <>
-              <Volume2 className="w-3.5 h-3.5 text-[#ffb066] animate-pulse" />
-              <span>Tắt âm thanh</span>
-            </>
-          ) : (
-            <>
-              <VolumeX className="w-3.5 h-3.5 text-white/80" />
-              <span>Bật âm thanh</span>
-            </>
+        {/* Hidden file input for uploading custom background */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileUpload}
+        />
+
+        <div className="flex items-center gap-2">
+          {/* Nút thay đổi ảnh nền */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-black/35 backdrop-blur-md border border-white/30 text-white hover:bg-black/55 transition-all text-xs font-semibold shadow-xs bouncy cursor-pointer"
+            title="Tải lên hoặc thay đổi ảnh nền từ máy tính"
+          >
+            <ImageIcon className="w-3.5 h-3.5 text-amber-300" />
+            <span className="hidden sm:inline">Đổi ảnh nền</span>
+          </button>
+
+          {/* Nút cài đặt quản trị */}
+          {onOpenSettings && (
+            <button
+              type="button"
+              onClick={onOpenSettings}
+              className="p-1.5 rounded-2xl bg-black/35 backdrop-blur-md border border-white/30 text-white hover:bg-black/55 transition-all text-xs font-semibold shadow-xs bouncy cursor-pointer"
+              title="Cài đặt hệ thống"
+            >
+              <Settings className="w-3.5 h-3.5" />
+            </button>
           )}
-        </button>
+
+          {/* Nút bật tắt âm thanh */}
+          <button
+            type="button"
+            onClick={onToggleAudio}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-black/35 backdrop-blur-md border border-white/30 text-white hover:bg-black/55 transition-all text-xs font-semibold shadow-xs bouncy cursor-pointer"
+          >
+            {isAudioPlaying ? (
+              <>
+                <Volume2 className="w-3.5 h-3.5 text-[#ffb066] animate-pulse" />
+                <span className="hidden sm:inline">Tắt nhạc</span>
+              </>
+            ) : (
+              <>
+                <VolumeX className="w-3.5 h-3.5 text-white/80" />
+                <span className="hidden sm:inline">Bật nhạc</span>
+              </>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* 4. Central Content Card: Đặt trong khung thủy tinh mờ giúp làm nổi bật chữ tối đa, cân đối trên/dưới */}

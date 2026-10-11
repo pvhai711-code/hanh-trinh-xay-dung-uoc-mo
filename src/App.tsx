@@ -205,7 +205,21 @@ export default function App() {
   }
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-[#fbf9f5] font-serif select-none">
+    <div
+      className={`relative w-screen h-screen overflow-hidden flex flex-col font-serif select-none ${
+        currentScreen === 'welcome' ? 'bg-slate-950 bg-cover bg-center bg-no-repeat' : 'bg-[#fbf9f5]'
+      }`}
+      style={
+        currentScreen === 'welcome'
+          ? {
+              backgroundImage: "url('/br.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }
+          : undefined
+      }
+    >
       {/* Toast Notification */}
       {toastMsg && (
         <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-[#0a6962] text-white px-4 py-2.5 rounded-2xl shadow-md border border-[#0a6962]/40 text-xs animate-in fade-in slide-in-from-top duration-200">
@@ -221,31 +235,39 @@ export default function App() {
         </div>
       )}
 
-      {/* Interactive Top Navigation Bar */}
-      <div className="no-print w-full shrink-0">
-        <HeaderBar
-          currentScreen={currentScreen}
-          questionIndex={currentQuestionIndex + 1}
-          totalQuestions={activeQuestions.length}
-          isAudioPlaying={isAudioPlaying}
-          onToggleAudio={handleToggleAudio}
-          aspectMode={aspectMode}
-          onToggleAspect={(mode) => setAspectMode(mode)}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          onSavePdf={currentScreen === 'results' ? handleSavePdf : undefined}
-          isPdfLoading={isPdfLoading}
-          onGoHome={() => setCurrentScreen('welcome')}
-        />
-      </div>
+      {/* Interactive Top Navigation Bar (Chỉ hiển thị từ trang khảo sát trở đi để ảnh nền Welcome phủ trọn màn hình) */}
+      {currentScreen !== 'welcome' && (
+        <div className="no-print w-full shrink-0">
+          <HeaderBar
+            currentScreen={currentScreen}
+            questionIndex={currentQuestionIndex + 1}
+            totalQuestions={activeQuestions.length}
+            isAudioPlaying={isAudioPlaying}
+            onToggleAudio={handleToggleAudio}
+            aspectMode={aspectMode}
+            onToggleAspect={(mode) => setAspectMode(mode)}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+            onSavePdf={currentScreen === 'results' ? handleSavePdf : undefined}
+            isPdfLoading={isPdfLoading}
+            onGoHome={() => setCurrentScreen('welcome')}
+          />
+        </div>
+      )}
 
       {/* Main Viewport Container */}
-      <main className="no-print flex-1 w-full flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden">
+      <main
+        className={`no-print flex-1 w-full flex items-center justify-center overflow-hidden ${
+          currentScreen === 'welcome' ? 'p-0 h-full w-full' : 'p-2 sm:p-4 md:p-6'
+        }`}
+      >
         {/* Aspect Ratio Sized Frame */}
         <div
-          className={`relative bg-[#fdfdfd] rounded-2xl sm:rounded-3xl shadow-md border border-[#0a6962]/15 overflow-hidden transition-all duration-300 ease-in-out ${
-            aspectMode === '16:9'
-              ? 'w-full max-w-[960px] h-[92vh] max-h-[660px]'
-              : 'w-full max-w-[420px] h-[92vh] max-h-[760px]'
+          className={`relative overflow-hidden transition-all duration-300 ease-in-out ${
+            currentScreen === 'welcome'
+              ? 'w-full h-full'
+              : aspectMode === '16:9'
+              ? 'bg-[#fdfdfd] rounded-2xl sm:rounded-3xl shadow-md border border-[#0a6962]/15 w-full max-w-[960px] h-[92vh] max-h-[660px]'
+              : 'bg-[#fdfdfd] rounded-2xl sm:rounded-3xl shadow-md border border-[#0a6962]/15 w-full max-w-[420px] h-[92vh] max-h-[760px]'
           }`}
         >
           {/* Screen 1: Welcome / Cover */}
@@ -254,6 +276,7 @@ export default function App() {
               onStart={handleStart}
               isAudioPlaying={isAudioPlaying}
               onToggleAudio={handleToggleAudio}
+              onOpenSettings={() => setIsSettingsOpen(true)}
             />
           )}
 
