@@ -1,0 +1,8 @@
+{
+  "name": "Hành Trình Xây Dựng Ước Mơ",
+  "description": "Khám phá sự bền bỉ, mục đích sống và khả năng tự kiểm soát để hiểu hơn về hành trình ước mơ của chính em. Hiểu mình hôm nay – Kiến tạo ngày mai.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
