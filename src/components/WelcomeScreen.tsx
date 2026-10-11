@@ -7,6 +7,8 @@ interface WelcomeScreenProps {
   onStart: () => void;
   isAudioPlaying: boolean;
   onToggleAudio: () => void;
+  volume?: number;
+  onVolumeChange?: (vol: number) => void;
   onOpenSettings?: () => void;
 }
 
@@ -14,6 +16,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onStart,
   isAudioPlaying,
   onToggleAudio,
+  volume = 0.5,
+  onVolumeChange,
   onOpenSettings,
 }) => {
   const [bgSrc, setBgSrc] = useState<string>(() => {
@@ -177,24 +181,47 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             </button>
           )}
 
-          {/* Nút bật tắt âm thanh */}
-          <button
-            type="button"
-            onClick={onToggleAudio}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-black/35 backdrop-blur-md border border-white/30 text-white hover:bg-black/55 transition-all text-xs font-semibold shadow-xs bouncy cursor-pointer"
-          >
-            {isAudioPlaying ? (
-              <>
-                <Volume2 className="w-3.5 h-3.5 text-[#ffb066] animate-pulse" />
-                <span className="hidden sm:inline">Tắt nhạc</span>
-              </>
-            ) : (
-              <>
-                <VolumeX className="w-3.5 h-3.5 text-white/80" />
-                <span className="hidden sm:inline">Bật nhạc</span>
-              </>
+          {/* Cụm điều khiển Nhạc nền: Bật/Tắt & Thanh kéo âm lượng (Volume Input Range) */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/30 text-white shadow-xs">
+            {/* Nút Bật/Tắt nhạc với hiệu ứng sóng âm khi phát */}
+            <button
+              type="button"
+              onClick={onToggleAudio}
+              className="flex items-center gap-1.5 text-xs font-semibold hover:text-[#ffb066] transition-all cursor-pointer bouncy-tap"
+              title={isAudioPlaying ? 'Tạm dừng nhạc (uocmo.mp3)' : 'Bật nhạc nền (uocmo.mp3)'}
+            >
+              {isAudioPlaying ? (
+                <>
+                  <Volume2 className="w-4 h-4 text-[#ffb066] animate-pulse shrink-0" />
+                  <span className="text-[11px] font-bold text-[#ffb066] hidden sm:inline">Tắt nhạc</span>
+                </>
+              ) : (
+                <>
+                  <VolumeX className="w-4 h-4 text-white/80 shrink-0" />
+                  <span className="text-[11px] text-white/90 hidden sm:inline">Bật nhạc</span>
+                </>
+              )}
+            </button>
+
+            {/* Thanh kéo chỉnh âm lượng từ 0 đến 1 (mặc định 0.5) */}
+            {onVolumeChange && (
+              <div className="flex items-center gap-1.5 pl-1.5 border-l border-white/20">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={volume}
+                  onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
+                  className="w-14 sm:w-20 h-1.5 bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#ff7c00] focus:outline-none"
+                  title={`Âm lượng: ${Math.round(volume * 100)}%`}
+                />
+                <span className="text-[10px] text-white/70 font-mono w-6 text-right hidden sm:inline">
+                  {Math.round(volume * 100)}%
+                </span>
+              </div>
             )}
-          </button>
+          </div>
         </div>
       </header>
 

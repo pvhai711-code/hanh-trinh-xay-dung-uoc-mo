@@ -35,6 +35,7 @@ export default function App() {
   const [selectedStageId, setSelectedStageId] = useState<number | undefined>(undefined);
   const [userCommitment, setUserCommitment] = useState('');
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [audioVolume, setAudioVolume] = useState(0.5);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [adminToken, setAdminToken] = useState<string | null>(null);
   const [isPdfLoading, setIsPdfLoading] = useState(false);
@@ -95,10 +96,18 @@ export default function App() {
   // Filter enabled questions for active survey
   const activeQuestions = questions.filter((q) => q.enabled);
 
-  // Audio toggle
+  // Audio toggle & volume handlers
   const handleToggleAudio = () => {
     const playing = ambientAudio.toggle();
     setIsAudioPlaying(playing);
+  };
+
+  const handleVolumeChange = (newVolume: number) => {
+    setAudioVolume(newVolume);
+    ambientAudio.setVolume(newVolume);
+    if (!isAudioPlaying && newVolume > 0) {
+      // If user moves slider from 0 or while paused, keep status or sync
+    }
   };
 
   // Answer handler
@@ -379,6 +388,8 @@ export default function App() {
               onStart={handleStart}
               isAudioPlaying={isAudioPlaying}
               onToggleAudio={handleToggleAudio}
+              volume={audioVolume}
+              onVolumeChange={handleVolumeChange}
               onOpenSettings={() => setIsSettingsOpen(true)}
             />
           )}
