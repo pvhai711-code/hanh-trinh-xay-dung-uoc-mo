@@ -192,36 +192,45 @@ export default function App() {
     }
   };
 
-  // PDF Export with client-side jsPDF download & safe fallback
-  const handleSavePdf = async () => {
-    // 1. Khóa nút bấm để tránh người dùng nhấn liên tục
+  // PDF Export with client-side jsPDF download, setTimeout thread decoupling & safe unblocking
+  const handleSavePdf = () => {
+    // 1. Đặt cờ loading để phản hồi giao diện tức thì
     setIsPdfLoading(true);
 
-    try {
-      const success = await exportReportToPdf(
-        'print-report-container',
-        'Bao_Cao_Hanh_Trinh_Uoc_Mo.pdf'
-      );
-
-      if (success) {
-        setToastMsg('Đã tạo và tải tệp PDF về máy thành công!');
-        setTimeout(() => setToastMsg(null), 3000);
-      }
-    } catch (err) {
-      console.error('[handleSavePdf Lỗi xuất PDF]:', err);
-      // Fallback nếu có lỗi
+    // 2. Sử dụng setTimeout(..., 100) để tách rời tiến trình: cho trình duyệt khoảng nghỉ 100ms
+    // nhằm cập nhật giao diện, hiển thị nút đang xử lý và giải phóng luồng chính (Main Thread)
+    setTimeout(async () => {
       try {
-        window.print();
-      } catch (_) {}
-    } finally {
-      // ⚠️ ĐOẠN QUAN TRỌNG NHẤT: Bắt buộc mở khóa web trong khối finally sau khi chạy xong hoặc gặp lỗi/bị hủy
-      setIsPdfLoading(false);
+        const success = await exportReportToPdf(
+          'print-report-container',
+          'Bao_Cao_Hanh_Trinh_Uoc_Mo.pdf'
+        );
 
-      // Đảm bảo tiêu điểm màn hình và các sự kiện chuột/chạm luôn hoạt động lại bình thường
-      if (typeof window !== 'undefined') {
-        window.focus();
+        if (success) {
+          setToastMsg('Đã tạo và tải tệp PDF về máy thành công!');
+          setTimeout(() => setToastMsg(null), 3000);
+        }
+      } catch (err) {
+        console.error('[handleSavePdf Lỗi xuất PDF]:', err);
+        try {
+          window.print();
+        } catch (_) {}
+      } finally {
+        // ⚠️ Ép trình duyệt mở khóa giao diện ngầm (Unblock Main Thread)
+        setIsPdfLoading(false);
+
+        // Xóa sạch mọi thuộc tính khóa pointer-events hay cuộn nếu có
+        if (typeof document !== 'undefined') {
+          document.body.style.pointerEvents = 'auto';
+          document.body.style.overflow = 'auto';
+        }
+
+        // Khôi phục tiêu điểm tương tác
+        if (typeof window !== 'undefined') {
+          window.focus();
+        }
       }
-    }
+    }, 100);
   };
 
   // Admin authentication

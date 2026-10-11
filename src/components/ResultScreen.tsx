@@ -34,10 +34,18 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   const handleRetakeClick = () => {
     try {
       const savedBg = localStorage.getItem('custom_bg_data');
+      const savedSlide2 = localStorage.getItem('custom_slide2_data');
       localStorage.clear();
       sessionStorage.clear();
       if (savedBg) {
         localStorage.setItem('custom_bg_data', savedBg);
+      }
+      if (savedSlide2) {
+        localStorage.setItem('custom_slide2_data', savedSlide2);
+      }
+      if (typeof document !== 'undefined') {
+        document.body.style.pointerEvents = 'auto';
+        document.body.style.overflow = 'auto';
       }
     } catch (e) {
       console.warn('Lỗi khi xóa client storage:', e);

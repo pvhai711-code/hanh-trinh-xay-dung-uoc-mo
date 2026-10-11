@@ -7,8 +7,8 @@ export interface PdfExportOptions {
 
 /**
  * Generates and downloads a crisp PDF report client-side using html2pdf.js.
- * Strictly wrapped in a bulletproof Promise and try/catch/finally to guarantee
- * that under NO circumstances does the UI freeze or stay locked.
+ * Strictly wrapped in setTimeout to yield to the browser main thread,
+ * with pointer-events: none and full cleanup.
  */
 export async function exportReportToPdf(
   elementId: string,
@@ -26,6 +26,9 @@ export async function exportReportToPdf(
   let clone: HTMLElement | null = null;
 
   try {
+    // 1. Tách rời tiến trình với setTimeout để giải phóng Main Thread của trình duyệt
+    await new Promise((resolve) => setTimeout(resolve, 120));
+
     // Dynamically import html2pdf.js to ensure strict client-side evaluation
     const html2pdfModule = await import('html2pdf.js');
     const html2pdf = (html2pdfModule.default || html2pdfModule) as any;
@@ -34,7 +37,7 @@ export async function exportReportToPdf(
     clone.classList.remove('hidden', 'print:block');
     clone.id = `${elementId}-export-clone`;
 
-    // Off-screen layout for crisp capture
+    // Off-screen layout for crisp capture - strictly pointer-events: none
     clone.style.display = 'block';
     clone.style.position = 'fixed';
     clone.style.left = '-10000px';
@@ -46,6 +49,7 @@ export async function exportReportToPdf(
     clone.style.zIndex = '-9999';
     clone.style.opacity = '1';
     clone.style.visibility = 'visible';
+    clone.style.pointerEvents = 'none';
 
     document.body.appendChild(clone);
 
@@ -77,7 +81,7 @@ export async function exportReportToPdf(
       },
     };
 
-    // Execute html2pdf Promise pipeline with guaranteed timeout protection (max 15s)
+    // 2. Chạy pipeline Promise chuẩn với cơ chế then / catch / finally
     const pdfPromise = new Promise<boolean>((resolve, reject) => {
       try {
         html2pdf()
@@ -86,7 +90,6 @@ export async function exportReportToPdf(
           .toPdf()
           .get('pdf')
           .then(function (_pdf: any) {
-            // Success in generating PDF, now save/download
             return html2pdf().set(options).from(clone).save();
           })
           .then(function () {
@@ -101,15 +104,15 @@ export async function exportReportToPdf(
       }
     });
 
-    // Race against a safety timeout so slow devices or dialog cancellation never hangs the browser
+    // Timeout an toàn tối đa 12s
     const timeoutPromise = new Promise<boolean>((_, reject) => {
-      setTimeout(() => reject(new Error('PDF Export Timeout - falling back to browser print')), 15000);
+      setTimeout(() => reject(new Error('PDF Export Timeout')), 12000);
     });
 
     const result = await Promise.race([pdfPromise, timeoutPromise]);
     return result;
   } catch (error) {
-    console.warn('[PDF Export] Encountered issue or cancellation, attempting graceful fallback:', error);
+    console.warn('[PDF Export] Gặp sự cố hoặc người dùng hủy, chuyển sang in trình duyệt:', error);
     try {
       window.print();
       return true;
@@ -117,11 +120,17 @@ export async function exportReportToPdf(
       return false;
     }
   } finally {
-    // ⚠️ CRITICAL: Always clean up cloned DOM elements and release memory
+    // ⚠️ Xóa bỏ hoàn toàn phần tử clone khỏi DOM và giải phóng bộ nhớ
     if (clone && clone.parentNode) {
       try {
         clone.parentNode.removeChild(clone);
       } catch (_) {}
     }
+
+    // Đảm bảo không còn bất kỳ overlay nào có pointerEvents = 'none' kẹt trên body hay html
+    try {
+      document.body.style.pointerEvents = 'auto';
+      document.body.style.overflow = 'auto';
+    } catch (_) {}
   }
 }
